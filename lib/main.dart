@@ -1,4 +1,5 @@
 import 'package:cours_flutter/ui/screens/HomeScreen.dart';
+import 'package:cours_flutter/ui/screens/ListScreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
         splashColor: Colors.transparent
       ),
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: ListScreen(),
     );
   }
 }

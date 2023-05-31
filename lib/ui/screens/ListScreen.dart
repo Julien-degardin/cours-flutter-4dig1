@@ -1,5 +1,7 @@
 import 'package:cours_flutter/data/dataSource/remote/VlilleApi.dart';
 import 'package:cours_flutter/ui/widgets/CustomBottomNavigationBar.dart';
+import 'package:cours_flutter/ui/widgets/ListStation.dart';
+
 import 'package:flutter/material.dart';
 
 class ListScreen extends StatelessWidget {
@@ -15,7 +17,8 @@ class ListScreen extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data?.records != null) {
-              return ListView.builder(itemBuilder: (context, index) {
+              return ListStation(records: snapshot.data!.records);
+              /*return ListView.builder(itemBuilder: (context, index) {
                 if (snapshot.data?.records![index] != null) {
                   if (snapshot.data?.records![index].fields != null) {
                     if (snapshot.data?.records![index].fields!.adresse != null) {
@@ -26,7 +29,7 @@ class ListScreen extends StatelessWidget {
                     }
                   }
                 }
-              }, itemCount: snapshot.data?.nhits);
+              }, itemCount: snapshot.data?.nhits);*/
             } else {
               return const CircularProgressIndicator();
             }
