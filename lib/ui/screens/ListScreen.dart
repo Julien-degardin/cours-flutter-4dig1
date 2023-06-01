@@ -10,19 +10,22 @@ class ListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: api.getVlille(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            if (snapshot.data?.records != null) {
-              return ListStation(records: snapshot.data!.records);
+          future: api.getVlille(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              if (snapshot.data?.records != null) {
+                return ListStation(records: snapshot.data!.records);
+              } else {
+                return const Center(
+                    child: CircularProgressIndicator(
+                  color: Colors.red,
+                ));
+              }
             } else {
-              return const CircularProgressIndicator();
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.red));
             }
-          } else {
-              return const CircularProgressIndicator();
-          }
-        }
-      ),
+          }),
     );
   }
 }

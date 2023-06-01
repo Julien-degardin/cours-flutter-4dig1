@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "368923517987",
+    "project_id": "flutter-vlille",
+    "storage_bucket": "flutter-vlille.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:368923517987:android:ef9f191cbd92e37247fd96",
+        "android_client_info": {
+          "package_name": "com.jdegardin.cours.cours_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC81CY4UnGrzOOPJD9DZ0eO1KM_HTA7gT0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
