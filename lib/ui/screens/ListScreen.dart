@@ -11,25 +11,12 @@ class ListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: const CustomBottomNavigationBar(),
       body: FutureBuilder(
         future: api.getVlille(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data?.records != null) {
               return ListStation(records: snapshot.data!.records);
-              /*return ListView.builder(itemBuilder: (context, index) {
-                if (snapshot.data?.records![index] != null) {
-                  if (snapshot.data?.records![index].fields != null) {
-                    if (snapshot.data?.records![index].fields!.adresse != null) {
-                      return ListTile(
-                          title: Text(
-                              snapshot.data!.records![index].fields!.adresse!)
-                      );
-                    }
-                  }
-                }
-              }, itemCount: snapshot.data?.nhits);*/
             } else {
               return const CircularProgressIndicator();
             }
