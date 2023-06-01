@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         splashColor: Colors.transparent
       ),
       debugShowCheckedModeBanner: false,
-      home: ListScreen(),
+      home: const HomeScreen(),
     );
   }
 }
