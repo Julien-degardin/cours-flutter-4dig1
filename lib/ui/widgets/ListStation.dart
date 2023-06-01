@@ -1,3 +1,5 @@
+import 'dart:math' show cos, sqrt, asin;
+
 import 'package:flutter/material.dart';
 import 'package:cours_flutter/data/model/VlilleApiResponse.dart';
 
@@ -9,7 +11,7 @@ class ListStation extends StatelessWidget {
   int? nbvelos = 0;
   int? nbplaces = 0;
 
-  defineColor(nb) {
+   Color defineColor(nb) {
     if(nb == 0) {
       return Colors.red;
     } else if (nb <= 5) {
@@ -18,6 +20,15 @@ class ListStation extends StatelessWidget {
       return Colors.green;
     }
   }
+
+  /*double? calculateDistance(lat1, lgt1, latDest, lgtDest) {
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 - c((latDest - lat1) * p)/2 +
+        c(lat1 * p) * c(latDest * p) *
+            (1 - c((lgtDest - lgt1) * p))/2;
+    return 1000 * (12742 * asin(sqrt(a)));
+  }*/
 
   @override
   ListView build(BuildContext context) {
@@ -44,7 +55,7 @@ class ListStation extends StatelessWidget {
                       const WidgetSpan(child: SizedBox(width: 10)),
                       WidgetSpan(child:
                       records![index].fields!.type == "AVEC TPE" ?
-                      const Icon(Icons.credit_card) : const Icon(Icons.credit_card_off)
+                      const Icon(Icons.credit_score) : const Icon(Icons.credit_card_off)
                       )
                     ]),
                   ),
@@ -53,7 +64,7 @@ class ListStation extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('XX mètres'),
+                      Text('${records![index].fields!.distance!.toStringAsFixed(0)} mètres'),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -65,7 +76,7 @@ class ListStation extends StatelessWidget {
                               const SizedBox(width: 5,),
                               Text(records![index].fields!.nbvelosdispo!.toString(),
                                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: defineColor(nbvelos)),),
-                              const SizedBox(width: 10),
+                              const SizedBox(width: 15),
                               CircleAvatar(backgroundColor: defineColor(nbplaces).withOpacity(0.2),
                                 child: Icon(Icons.local_parking, color: defineColor(nbplaces)),),
                               const SizedBox(width: 5),
