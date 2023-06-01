@@ -25,7 +25,7 @@ class ListStation extends StatelessWidget {
       itemBuilder: (context, int index) {
         records![index].fields!.etat == "RÉFORMÉ" || records![index].fields!.etatconnexion == "DÉCONNECTÉ" ? active = false : active = true;
         nbvelos = records![index].fields!.nbvelosdispo;
-        nbplaces = records![index].fields!.nbvelosdispo;
+        nbplaces = records![index].fields!.nbplacesdispo;
 
 
         if (records![index].fields != null) {
@@ -55,20 +55,27 @@ class ListStation extends StatelessWidget {
                     children: [
                       const Text('XX mètres'),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CircleAvatar(
-                            backgroundColor: defineColor(nbvelos).withOpacity(0.2),
-                            child: Icon(Icons.pedal_bike, color: defineColor(nbvelos),),),
-                          const SizedBox(width: 5,),
-                          Text(records![index].fields!.nbvelosdispo!.toString(),
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: defineColor(nbvelos)),),
-                          const SizedBox(width: 10),
-                          CircleAvatar(backgroundColor: defineColor(nbplaces).withOpacity(0.2),
-                            child: Icon(Icons.local_parking, color: defineColor(nbplaces)),),
-                          const SizedBox(width: 5),
-                          Text(records![index].fields!.nbplacesdispo!.toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: defineColor(nbplaces)),),
-                          const SizedBox(width: 10),
-                          ElevatedButton(onPressed: () {}, child: const Text('Y aller')),
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: defineColor(nbvelos).withOpacity(0.2),
+                                child: Icon(Icons.pedal_bike, color: defineColor(nbvelos),),),
+                              const SizedBox(width: 5,),
+                              Text(records![index].fields!.nbvelosdispo!.toString(),
+                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: defineColor(nbvelos)),),
+                              const SizedBox(width: 10),
+                              CircleAvatar(backgroundColor: defineColor(nbplaces).withOpacity(0.2),
+                                child: Icon(Icons.local_parking, color: defineColor(nbplaces)),),
+                              const SizedBox(width: 5),
+                              Text(records![index].fields!.nbplacesdispo!.toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: defineColor(nbplaces)),),
+                              const SizedBox(width: 10),
+                            ],
+                          ),
+                          ElevatedButton(onPressed: () {},
+                            child: const Icon(Icons.directions, size: 28, color: Colors.red,),
+                          )
                         ],
                       ),
                     ]
@@ -76,7 +83,7 @@ class ListStation extends StatelessWidget {
 
                 trailing:
                     IconButton(
-                      icon: const Icon(Icons.star_border),
+                      icon: const Icon(Icons.star_border, size: 26,),
                       onPressed: () {},
                     ),
               ),
