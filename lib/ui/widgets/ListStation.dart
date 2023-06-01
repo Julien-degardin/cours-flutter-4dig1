@@ -9,6 +9,16 @@ class ListStation extends StatelessWidget {
   int? nbvelos = 0;
   int? nbplaces = 0;
 
+  defineColor(nb) {
+    if(nb == 0) {
+      return Colors.red;
+    } else if (nb <= 5) {
+      return Colors.orange;
+    } else {
+      return Colors.green;
+    }
+  }
+
   @override
   ListView build(BuildContext context) {
     return ListView.builder(
@@ -22,64 +32,55 @@ class ListStation extends StatelessWidget {
           if (records![index].fields!.adresse != null) {
             return Card(
               color: active ? Colors.white : Colors.white38,
-              child: ListTile(
+              child: Column(
+                children: [
+              ListTile(
                 visualDensity: VisualDensity.comfortable,
                 isThreeLine: true,
-                minVerticalPadding: 8,
-                title: Padding(
-                  padding: const EdgeInsets.only(top: 5),
-                  child: Text.rich(
-                    TextSpan(style: TextStyle(fontSize: 20), children: [
+                title:
+                Text.rich(
+                    TextSpan(style: const TextStyle(fontSize: 20), children: [
                       TextSpan(text: records![index].fields!.nom!),
-                      WidgetSpan(child: SizedBox(width: 10)),
+                      const WidgetSpan(child: SizedBox(width: 10)),
                       WidgetSpan(child:
                       records![index].fields!.type == "AVEC TPE" ?
-                      Icon(Icons.credit_card) : Icon(Icons.credit_card_off)
+                      const Icon(Icons.credit_card) : const Icon(Icons.credit_card_off)
                       )
                     ]),
                   ),
-                ),
 
-                subtitle: Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
-                  child: Column(
+                subtitle:
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('XX mètres'),
-                      Text.rich(
-                        TextSpan(style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold), children: [
-                          const WidgetSpan(child: CircleAvatar(child: const Icon(Icons.pedal_bike, color: Colors.blue,), backgroundColor: Color.fromRGBO(
-                              64, 197, 253, 0.3176470588235294),)
-                          ),
-                          const WidgetSpan(child: SizedBox(width: 5,)),
-                          TextSpan(text: records![index].fields!.nbvelosdispo!.toString()),
-                          const WidgetSpan(child: SizedBox(width: 10)),
-                          const WidgetSpan(child: CircleAvatar(child: const Icon(Icons.local_parking, color: Colors.blue,), backgroundColor: Color.fromRGBO(
-                              64, 197, 253, 0.3176470588235294),)
-                          ),
-                          const WidgetSpan(child: SizedBox(width: 5)),
-                          TextSpan(text: records![index].fields!.nbplacesdispo!.toString()),
-                        ]),
+                      const Text('XX mètres'),
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: defineColor(nbvelos).withOpacity(0.2),
+                            child: Icon(Icons.pedal_bike, color: defineColor(nbvelos),),),
+                          const SizedBox(width: 5,),
+                          Text(records![index].fields!.nbvelosdispo!.toString(),
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: defineColor(nbvelos)),),
+                          const SizedBox(width: 10),
+                          CircleAvatar(backgroundColor: defineColor(nbplaces).withOpacity(0.2),
+                            child: Icon(Icons.local_parking, color: defineColor(nbplaces)),),
+                          const SizedBox(width: 5),
+                          Text(records![index].fields!.nbplacesdispo!.toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: defineColor(nbplaces)),),
+                          const SizedBox(width: 10),
+                          ElevatedButton(onPressed: () {}, child: const Text('Y aller')),
+                        ],
                       ),
                     ]
-                  )
-                ),
+                  ),
 
-                trailing: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
+                trailing:
                     IconButton(
-                      icon: Icon(Icons.star_border),
+                      icon: const Icon(Icons.star_border),
                       onPressed: () {},
                     ),
-                    IconButton(
-                      icon: Icon(Icons.arrow_forward),
-                      onPressed: () {},
-                    ),
-                  ],
-                )
               ),
-
+                ])
             );
           }
         }
