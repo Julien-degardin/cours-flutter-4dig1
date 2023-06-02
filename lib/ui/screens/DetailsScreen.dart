@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailsScreen extends StatefulWidget {
   // const DetailsScreen({super.key, required this.fields});
@@ -68,7 +69,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                  onPressed: () {},
+                  onPressed: () {
+                    /*Uri googleMapsUri = Uri.parse('https://maps.google.com/maps?saddr=50.630238,3.056559&daddr=${records![index].fields!.localisation![0]},${records![index].fields!.localisation![1]}');
+                    launchUrl(googleMapsUri, mode: LaunchMode.externalApplication);*/
+                  },
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [

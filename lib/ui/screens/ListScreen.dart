@@ -26,5 +26,20 @@ class ListScreen extends StatelessWidget {
               child: CircularProgressIndicator(color: Colors.red));
         }
       });
+
+    // Ajouter un favori
+    // if (FirebaseAuth.instance.currentUser != null) {
+    //   fieldsRef.doc(FirebaseAuth.instance.currentUser!.uid).set(data);
+    // }
+
+
+    // fieldsRef.doc(FirebaseAuth.instance.currentUser!.uid).get().then((value) {
+    //   value.data();
+    // });
+
+    // Changer l'icône après récupération des favoris
+    // fieldsRef.get().then((value) => state(() {
+    //
+    // }));
   }
 }
