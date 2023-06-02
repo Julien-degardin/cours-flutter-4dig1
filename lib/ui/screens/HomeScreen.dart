@@ -1,5 +1,6 @@
 import 'package:cours_flutter/ui/screens/DetailsScreen.dart';
 import 'package:cours_flutter/ui/screens/ListScreen.dart';
+import 'package:cours_flutter/ui/screens/SearchScreen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -60,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: IndexedStack(
         index: _selectedIndex,
-        children: [ListScreen(), const DetailsScreen()],
+        children: [ListScreen(), SearchScreen() , const DetailsScreen()],
       ),
     );
   }
