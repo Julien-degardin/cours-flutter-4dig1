@@ -108,6 +108,11 @@ class Fields {
         c(lat1 * p) * c(latDest * p) *
             (1 - c((lgtDest - lgt1) * p))/2;
     distance = 1000 * (12742 * asin(sqrt(a)));
+    /*
+    TODO : Passer en km et metres
+    if(distance! < 1) {
+      distance = 1000 * distance!;
+    }*/
     return distance;
   }
 

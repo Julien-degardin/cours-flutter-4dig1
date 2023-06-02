@@ -8,25 +8,23 @@ class ListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder(
-          future: api.getVlille(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              if (snapshot.data?.records != null) {
-                snapshot.data?.records!.sort((a, b) => a.fields!.distance!.compareTo(b.fields!.distance!));
-                return ListStation(records: snapshot.data!.records);
-              } else {
-                return const Center(
-                    child: CircularProgressIndicator(
-                  color: Colors.red,
-                ));
-              }
-            } else {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.red));
-            }
-          }),
-    );
+    return FutureBuilder(
+      future: api.getVlille(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data?.records != null) {
+            snapshot.data?.records!.sort((a, b) => a.fields!.distance!.compareTo(b.fields!.distance!));
+            return ListStation(records: snapshot.data!.records);
+          } else {
+            return const Center(
+                child: CircularProgressIndicator(
+              color: Colors.red,
+            ));
+          }
+        } else {
+          return const Center(
+              child: CircularProgressIndicator(color: Colors.red));
+        }
+      });
   }
 }
