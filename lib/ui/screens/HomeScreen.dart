@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: IndexedStack(
         index: _selectedIndex,
-        children: [ListScreen(), SearchScreen() , const DetailsScreen()],
+        children: [ListScreen(), SearchScreen() , SearchScreen()],
       ),
     );
   }

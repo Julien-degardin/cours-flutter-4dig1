@@ -1,5 +1,6 @@
 import 'dart:math' show cos, sqrt, asin;
 
+import 'package:cours_flutter/ui/screens/DetailsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:cours_flutter/data/model/VlilleApiResponse.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -48,6 +49,9 @@ class ListStation extends StatelessWidget {
               child: Column(
                 children: [
               ListTile(
+                onTap: () => Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => DetailsScreen(stationId: records![index].fields!.libelle!)),
+                ),
                 visualDensity: VisualDensity.comfortable,
                 isThreeLine: true,
                 title:
@@ -101,7 +105,8 @@ class ListStation extends StatelessWidget {
                 trailing:
                     IconButton(
                       icon: const Icon(Icons.star_border, size: 26,),
-                      onPressed: () {},
+                      onPressed: () {
+                      },
                     ),
               ),
                 ])
