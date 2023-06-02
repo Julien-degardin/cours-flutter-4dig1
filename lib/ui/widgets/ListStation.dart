@@ -21,6 +21,7 @@ class ListStation extends StatelessWidget {
     }
   }
 
+
   /*double? calculateDistance(lat1, lgt1, latDest, lgtDest) {
     var p = 0.017453292519943295;
     var c = cos;
