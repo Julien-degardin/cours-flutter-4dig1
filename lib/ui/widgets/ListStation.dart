@@ -2,6 +2,7 @@ import 'dart:math' show cos, sqrt, asin;
 
 import 'package:flutter/material.dart';
 import 'package:cours_flutter/data/model/VlilleApiResponse.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ListStation extends StatelessWidget {
   ListStation({required this.records, Key? key}) : super(key: key);
@@ -21,6 +22,7 @@ class ListStation extends StatelessWidget {
     }
   }
 
+
   /*double? calculateDistance(lat1, lgt1, latDest, lgtDest) {
     var p = 0.017453292519943295;
     var c = cos;
@@ -31,7 +33,7 @@ class ListStation extends StatelessWidget {
   }*/
 
   @override
-  ListView build(BuildContext context) {
+  Widget build(BuildContext context) {
     return ListView.builder(
       itemBuilder: (context, int index) {
         records![index].fields!.etat == "RÉFORMÉ" || records![index].fields!.etatconnexion == "DÉCONNECTÉ" ? active = false : active = true;
@@ -84,7 +86,11 @@ class ListStation extends StatelessWidget {
                               const SizedBox(width: 10),
                             ],
                           ),
-                          ElevatedButton(onPressed: () {},
+                          ElevatedButton(
+                            onPressed: () {
+                              Uri googleMapsUri = Uri.parse('https://maps.google.com/maps?saddr=50.630238,3.056559&daddr=${records![index].fields!.localisation![0]},${records![index].fields!.localisation![1]}');
+                              launchUrl(googleMapsUri, mode: LaunchMode.externalApplication);
+                            },
                             child: const Icon(Icons.directions, size: 28, color: Colors.red,),
                           )
                         ],

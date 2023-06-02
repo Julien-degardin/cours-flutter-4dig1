@@ -36,8 +36,7 @@ class ListScreen extends StatelessWidget {
     //
     // }));
 
-    return Scaffold(
-      body: FutureBuilder(
+    return FutureBuilder(
           future: api.getVlille(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -54,7 +53,6 @@ class ListScreen extends StatelessWidget {
               return const Center(
                   child: CircularProgressIndicator(color: Colors.red));
             }
-          }),
-    );
+          });
   }
 }
