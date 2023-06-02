@@ -97,8 +97,13 @@ class Fields {
     commune = json['commune'];
     etatconnexion = json['etatconnexion'];
     type = json['type'];
-    if (json.containsKey('localisation')) localisation = json['localisation'].cast<double>() ;
-    distance = calculateDistance(50.630238, 3.056559, localisation![0], localisation![1]);
+    if (json.containsKey('localisation')) {
+      localisation = json['localisation'].cast<double>();
+      if (json['localisation'] != null) {
+        distance = calculateDistance(
+          50.630238, 3.056559, localisation![0], localisation![1]);
+      }
+    }
   }
 
   double? calculateDistance(lat1, lgt1, latDest, lgtDest) {
