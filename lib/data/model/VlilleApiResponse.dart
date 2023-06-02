@@ -1,3 +1,5 @@
+import 'dart:math';
+
 class VlilleApiResponse {
   int? nhits;
   List<Records>? records;
@@ -70,6 +72,7 @@ class Fields {
   String? etatconnexion;
   String? type;
   List<double>? localisation;
+  double? distance;
 
   Fields(
       {this.nbvelosdispo,
@@ -81,7 +84,8 @@ class Fields {
         this.commune,
         this.etatconnexion,
         this.type,
-        this.localisation});
+        this.localisation,
+        this.distance = 0.00});
 
   Fields.fromJson(Map<String, dynamic> json) {
     nbvelosdispo = json['nbvelosdispo'];
@@ -94,6 +98,17 @@ class Fields {
     etatconnexion = json['etatconnexion'];
     type = json['type'];
     if (json.containsKey('localisation')) localisation = json['localisation'].cast<double>() ;
+    distance = calculateDistance(50.630238, 3.056559, localisation![0], localisation![1]);
+  }
+
+  double? calculateDistance(lat1, lgt1, latDest, lgtDest) {
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 - c((latDest - lat1) * p)/2 +
+        c(lat1 * p) * c(latDest * p) *
+            (1 - c((lgtDest - lgt1) * p))/2;
+    distance = 1000 * (12742 * asin(sqrt(a)));
+    return distance;
   }
 
   Map<String, dynamic> toJson() {
@@ -108,6 +123,7 @@ class Fields {
     data['etatconnexion'] = etatconnexion;
     data['type'] = type;
     data['localisation'] = localisation;
+    data['distance'] = distance;
     return data;
   }
 }
