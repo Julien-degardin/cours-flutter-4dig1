@@ -13,7 +13,6 @@ class ListScreen extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data?.records != null) {
-            snapshot.data?.records!.sort((a, b) => a.fields!.distance!.compareTo(b.fields!.distance!));
             return ListStation(records: snapshot.data!.records);
           } else {
             return const Center(
