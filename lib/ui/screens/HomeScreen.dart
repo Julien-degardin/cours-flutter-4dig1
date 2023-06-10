@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cours_flutter/ui/screens/DetailsScreen.dart';
+import 'package:cours_flutter/ui/screens/FavoritesScreen.dart';
 import 'package:cours_flutter/ui/screens/ListScreen.dart';
 import 'package:cours_flutter/ui/screens/SearchScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: IndexedStack(
         index: _selectedIndex,
-        children: [ListScreen(favorites: favorites), SearchScreen(favorites: favorites) , SearchScreen(favorites: favorites)],
+        children: [ListScreen(favorites: favorites,), SearchScreen(favorites: favorites) , FavoritesScreen(favorites: favorites)],
       ),
     );
   }

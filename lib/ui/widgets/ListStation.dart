@@ -11,7 +11,6 @@ class ListStation extends StatefulWidget {
   List<Records>? records;
   List<int> favorites;
 
-
   @override
   State<ListStation> createState() => _ListStationState();
 }
