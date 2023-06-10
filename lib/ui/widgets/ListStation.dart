@@ -7,8 +7,10 @@ import 'package:cours_flutter/data/model/VlilleApiResponse.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ListStation extends StatefulWidget {
-  ListStation({required this.records, Key? key}) : super(key: key);
+  ListStation({required this.records, required this.favorites, Key? key}) : super(key: key);
   List<Records>? records;
+  List<int> favorites;
+
 
   @override
   State<ListStation> createState() => _ListStationState();
@@ -19,8 +21,6 @@ class _ListStationState extends State<ListStation> {
   int? nbvelos = 0;
   int? nbplaces = 0;
   bool isFav = false;
-  List<int> favorites = [];
-  bool isLoading = true;
 
 
   Color defineColor(nb) {
@@ -42,34 +42,9 @@ class _ListStationState extends State<ListStation> {
           toFirestore: (station, _) => station.toJson(),
         );
 
-
-  // A l'initialisation on appelle la fonction pour recuperer les favoris
-  void initState() {
-    super.initState();
-    getFav();
-  }
-
-  // On recupere la liste des favoris dans le tableau favorites
-  void getFav() async {
-    if (FirebaseAuth.instance.currentUser != null) {
-      DocumentSnapshot<FavFromFirestore> snapshot = await fieldsRef.doc(FirebaseAuth.instance.currentUser!.uid).get();
-      if (snapshot.exists) {
-        if (snapshot.data() != null) {
-          if (snapshot.data()!.stationId != null) {
-            favorites = snapshot.data()!.stationId!;
-          }
-        }
-      }
-    }
-    // Quand on a recupere la liste on dit que ça ne charge plus
-    setState(() {
-      isLoading = false;
-    });
-  }
-
   // Fonction simple pour verifier si le libelle de la station est dans la liste de favoris
   bool verifyFav(int libelle) {
-    return favorites.contains(libelle);
+    return widget.favorites.contains(libelle);
   }
 
   // On ajoute ou supprime de la liste des favoris le libelle de la station
@@ -77,22 +52,18 @@ class _ListStationState extends State<ListStation> {
   void toggleFavorite(int libelle) {
     setState(() {
       if (verifyFav(libelle)) {
-        favorites.remove(libelle);
+        widget.favorites.remove(libelle);
       } else {
-        favorites.add(libelle);
+        widget.favorites.add(libelle);
       }
-      fieldsRef.doc(FirebaseAuth.instance.currentUser!.uid).set(FavFromFirestore(stationId: favorites));
+      fieldsRef.doc(FirebaseAuth.instance.currentUser!.uid).set(FavFromFirestore(stationId: widget.favorites));
     });
   }
 
   @override
 
   Widget build(BuildContext context) {
-    // On verifie si ca ne charge plus et qu'on a donc bien notre liste
-    // Si c'est le cas on affiche mais pas avant
-    return isLoading ?
-    const Center(child:CircularProgressIndicator(color: Colors.red,)) :
-    ListView.builder(
+    return ListView.builder(
       itemBuilder: (context, int index) {
         widget.records![index].fields!.etat == "RÉFORMÉ" || widget.records![index].fields!.etatconnexion == "DÉCONNECTÉ" ? active = false : active = true;
         nbvelos = widget.records![index].fields!.nbvelosdispo;

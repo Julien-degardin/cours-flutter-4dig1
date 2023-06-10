@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cours_flutter/ui/screens/DetailsScreen.dart';
 import 'package:cours_flutter/ui/screens/ListScreen.dart';
 import 'package:cours_flutter/ui/screens/SearchScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../data/model/FavFromFirestore.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,12 +14,41 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  List<int> favorites = [];
+
+  void initState() {
+    super.initState();
+    _getFav();
+  }
+
+  // On récupère les favoris dans une liste qu'on pourra transférer entre les écrans
+  void _getFav() async {
+    final fieldsRef =
+    FirebaseFirestore.instance.collection('FAVORIS')
+        .withConverter<FavFromFirestore>(
+      fromFirestore: (snapshots, _) => FavFromFirestore.fromJson(snapshots.data()!),
+      toFirestore: (station, _) => station.toJson(),
+    );
+    if (FirebaseAuth.instance.currentUser != null) {
+      DocumentSnapshot<FavFromFirestore> snapshot = await fieldsRef.doc(FirebaseAuth.instance.currentUser!.uid).get();
+      if (snapshot.exists) {
+        if (snapshot.data() != null) {
+          if (snapshot.data()!.stationId != null) {
+            setState(() {
+              favorites = snapshot.data()!.stationId!;
+            });
+          }
+        }
+      }
+    }
+  }
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: IndexedStack(
         index: _selectedIndex,
-        children: [ListScreen(), SearchScreen() , SearchScreen()],
+        children: [ListScreen(favorites: favorites), SearchScreen(favorites: favorites) , SearchScreen(favorites: favorites)],
       ),
     );
   }
