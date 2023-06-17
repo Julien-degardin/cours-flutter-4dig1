@@ -68,7 +68,6 @@ class _ListStationState extends State<ListStation> {
         nbvelos = widget.records![index].fields!.nbvelosdispo;
         nbplaces = widget.records![index].fields!.nbplacesdispo;
 
-
         if (widget.records![index].fields != null) {
           if (widget.records![index].fields!.adresse != null) {
             return Card(
@@ -77,7 +76,7 @@ class _ListStationState extends State<ListStation> {
                 children: [
               ListTile(
                 onTap: () => Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => DetailsScreen(stationId: widget.records![index].fields!.libelle!)),
+                    builder: (context) => DetailsScreen(stationId: widget.records![index].fields!.libelle!, favorites: widget.favorites)),
                 ),
                 visualDensity: VisualDensity.comfortable,
                 isThreeLine: true,
