@@ -1,16 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cours_flutter/data/model/VlilleApiResponse.dart';
+import 'package:cours_flutter/ui/screens/ListScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/dataSource/remote/VlilleApi.dart';
+import '../../data/model/FavFromFirestore.dart';
 
 class DetailsScreen extends StatefulWidget {
-  DetailsScreen({super.key, required this.stationId});
+  DetailsScreen({super.key, required this.stationId, required this.favorites});
 
   // const DetailsScreen({super.key});
 
   final int stationId;
+  List<int> favorites;
 
   VlilleApi api = VlilleApi();
 
@@ -31,6 +36,36 @@ class _DetailsScreenState extends State<DetailsScreen> {
     }
   }
 
+  // On crée une variable pour simplifier l'ouverture de la connexion
+  // à la collection de Firestore
+  final fieldsRef = FirebaseFirestore.instance
+      .collection('FAVORIS')
+      .withConverter<FavFromFirestore>(
+        fromFirestore: (snapshots, _) =>
+            FavFromFirestore.fromJson(snapshots.data()!),
+        toFirestore: (station, _) => station.toJson(),
+      );
+
+  // Fonction simple pour verifier si le libelle de la station est dans la liste de favoris
+  bool verifyFav(int libelle) {
+    return widget.favorites.contains(libelle);
+  }
+
+  // On ajoute ou supprime de la liste des favoris le libelle de la station
+  // Et on renvoie cette liste à Firestore
+  void toggleFavorite(int libelle) {
+    setState(() {
+      if (verifyFav(libelle)) {
+        widget.favorites.remove(libelle);
+      } else {
+        widget.favorites.add(libelle);
+      }
+      fieldsRef
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .set(FavFromFirestore(stationId: widget.favorites));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -44,7 +79,16 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   .toList();
               return Scaffold(
                 appBar: AppBar(
-                  automaticallyImplyLeading: true,
+                  automaticallyImplyLeading: false,
+                  leading: BackButton(
+                      color: Colors.black54,
+                      onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ListScreen(
+                                      favorites: widget.favorites,
+                                    )),
+                          )),
                 ),
                 body: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -80,12 +124,18 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             style: const TextStyle(fontSize: 18),
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
-                          child: Icon(
-                            Icons.star_border,
-                            color: CupertinoColors.systemYellow,
-                            size: 40,
+                        Padding(
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
+                          child: IconButton(
+                            icon: Icon(
+                              verifyFav(widget.stationId)
+                                  ? Icons.star
+                                  : Icons.star_border,
+                            ),
+                            onPressed: () {
+                              toggleFavorite(widget.stationId);
+                            },
                           ),
                         ),
                         const Spacer(),
@@ -112,7 +162,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                   width: 5,
                                 ),
                                 Icon(
-                                  // <-- Icon
                                   Icons.arrow_forward_sharp,
                                   color: Colors.white,
                                   size: 24.0,
@@ -201,25 +250,15 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           const SizedBox(width: 8),
                           Text(
                             'Paiement en carte',
-                            style: TextStyle(fontSize: 16, color: station![0].fields!.type == "AVEC TPE" ? Colors.blue : Colors.redAccent),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: station![0].fields!.type == "AVEC TPE"
+                                    ? Colors.blue
+                                    : Colors.redAccent),
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    // const Center(
-                    //   child: Row(
-                    //     mainAxisSize: MainAxisSize.max,
-                    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //     children: [
-                    //       Chip(label: Text("Test")),
-                    //       Chip(label: Text("Test")),
-                    //       Chip(label: Text("Test")),
-                    //       Chip(label: Text("Test")),
-                    //       Chip(label: Text("Test"))
-                    //     ],
-                    //   ),
-                    // ),
                   ],
                 ),
               );
@@ -233,11 +272,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
             return const Center(
                 child: CircularProgressIndicator(color: Colors.red));
           }
-        }); // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+        });
   }
 }

@@ -5,7 +5,8 @@ import 'package:cours_flutter/ui/widgets/ListStation.dart';
 import '../../data/model/VlilleApiResponse.dart';
 
 class SearchScreen extends StatefulWidget {
-  SearchScreen({Key? key}) : super(key: key);
+  SearchScreen({Key? key, required this.favorites}) : super(key: key);
+  List<int> favorites;
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -54,7 +55,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     },
                   ),
                 ),
-                Expanded(child: ListStation(records: records))
+                Expanded(child: ListStation(records: records, favorites: widget.favorites,))
               ]);
             } else {
               return const CircularProgressIndicator();

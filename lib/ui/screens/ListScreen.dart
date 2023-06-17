@@ -3,7 +3,8 @@ import 'package:cours_flutter/ui/widgets/ListStation.dart';
 import 'package:flutter/material.dart';
 
 class ListScreen extends StatelessWidget {
-  ListScreen({Key? key}) : super(key: key);
+  ListScreen({Key? key, required this.favorites}) : super(key: key);
+  List<int> favorites;
   VlilleApi api = VlilleApi();
 
   @override
@@ -13,7 +14,7 @@ class ListScreen extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data?.records != null) {
-            return ListStation(records: snapshot.data!.records);
+            return ListStation(records: snapshot.data!.records, favorites: favorites,);
           } else {
             return const Center(
                 child: CircularProgressIndicator(
@@ -25,20 +26,5 @@ class ListScreen extends StatelessWidget {
               child: CircularProgressIndicator(color: Colors.red));
         }
       });
-
-    // Ajouter un favori
-    // if (FirebaseAuth.instance.currentUser != null) {
-    //   fieldsRef.doc(FirebaseAuth.instance.currentUser!.uid).set(data);
-    // }
-
-
-    // fieldsRef.doc(FirebaseAuth.instance.currentUser!.uid).get().then((value) {
-    //   value.data();
-    // });
-
-    // Changer l'icône après récupération des favoris
-    // fieldsRef.get().then((value) => state(() {
-    //
-    // }));
   }
 }
